@@ -1,4 +1,5 @@
 import 'package:cuacaku/pages/cuaca_page.dart';
+import 'package:cuacaku/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CuacaKu',
-      home: CuacaPage(),
+      home: HomePage(),
     );
   }
 }

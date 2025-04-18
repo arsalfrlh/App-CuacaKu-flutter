@@ -17,6 +17,15 @@ class CuacaService {
     }
   }
 
+  Future<Cuaca> getCariCuaca(String namaKota)async{
+    final response = await http.get(Uri.parse('$baseUrl?q=$namaKota&appid=$apiKey&units=metric'));
+    if(response.statusCode == 200){
+      return Cuaca.fromJson(json.decode(response.body));
+    }else{
+      throw Exception('Data gagal dimuat');
+    }
+  }
+
   Future<String> getCuacaSaatIni()async{
     //mengambil izin dari user
     LocationPermission izin = await Geolocator.checkPermission();

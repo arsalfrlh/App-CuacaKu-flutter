@@ -6,12 +6,15 @@ import 'package:lottie/lottie.dart';
 //utk android gunakan izin akses lokasi di  "android/app/src/main/AndroidManifest.xml"
 //ubh konfigurasi versi di "android/setting.gradle"
 
-class CuacaPage extends StatefulWidget {
+class CariPage extends StatefulWidget {
+  String cariKota;
+  CariPage({required this.cariKota});
+
   @override
-  _CuacaPageState createState() => _CuacaPageState();
+  _CariPageState createState() => _CariPageState();
 }
 
-class _CuacaPageState extends State<CuacaPage> {
+class _CariPageState extends State<CariPage> {
   final CuacaService cuacaService = CuacaService();
   Cuaca? _cuaca;
 
@@ -21,7 +24,7 @@ class _CuacaPageState extends State<CuacaPage> {
   }
 
   fetchCuaca() async {
-    String namaKota = await cuacaService.getCuacaSaatIni(); //memanggil class CuacaService dan function getCuacaSaatIni
+    String namaKota = widget.cariKota;
 
     try {
       final cuaca = await cuacaService.getCuaca(namaKota); //memanggil class CuacaService dan function getCuaca
@@ -57,13 +60,37 @@ class _CuacaPageState extends State<CuacaPage> {
     }
   }
 
+  String getKondisiCuaca(String? _kondisiCuaca) {
+    if (_kondisiCuaca == null) return 'Belum ada data';
+    switch (_kondisiCuaca.toLowerCase()) {
+      //Kondisi akan sesuai dengan isi array key API
+      case 'clouds':
+      case 'mist':
+      case 'smoke':
+      case 'haze':
+      case 'dust':
+      case 'fog':
+        return  'Berawan';
+      case 'rain':
+      case 'drizzle':
+      case 'shower rain':
+        return 'Hujan';
+      case 'thunderstorm':
+        return 'Badai';
+      case 'clear':
+        return 'Cerah';
+      default:
+        return 'Belum ada data';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[800],
         appBar: AppBar(
           title: Text(
-            'Cuaca Di Kota Anda',
+            'Made by Kwanzzx',
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
           backgroundColor: Colors.blue,
@@ -92,8 +119,7 @@ class _CuacaPageState extends State<CuacaPage> {
                 ),
               ),
 
-              Text(
-                _cuaca?.kondisiCuaca ?? "",
+              Text(getKondisiCuaca(_cuaca?.kondisiCuaca), //memanggil function GetKondisiCuaca| parameter class cuaca dan construktoe kondisiCuaca
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
